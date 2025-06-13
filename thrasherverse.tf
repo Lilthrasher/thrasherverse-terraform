@@ -16,6 +16,7 @@ resource "proxmox_vm_qemu" "reverb" {
     name = "reverb"
     target_node = "pve"
     vmid = "100"
+    vm_state = "started"
 
     clone = "thrasherverse-lvm"
     full_clone  = true
@@ -88,6 +89,7 @@ resource "proxmox_vm_qemu" "deora1" {
     name = "deora1"
     target_node = "hapve1"
     vmid = "300"
+    vm_state = "started"
 
     clone = "thrasherverse-ceph"
     full_clone  = true
@@ -145,6 +147,7 @@ resource "proxmox_vm_qemu" "deora2" {
     name = "deora2"
     target_node = "hapve2"
     vmid = "301"
+    vm_state = "started"
 
     clone = "thrasherverse-ceph"
     full_clone  = true
