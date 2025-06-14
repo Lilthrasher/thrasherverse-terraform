@@ -49,6 +49,11 @@ resource "proxmox_vm_qemu" "reverb" {
         bridge = "vmbr0"
     }
 
+    efidisk {
+        efitype = "4m"
+        storage = "local-lvm"
+    }
+
     disks {
         ide {
             ide2 {
@@ -122,6 +127,11 @@ resource "proxmox_vm_qemu" "deora1" {
         bridge = "vmbr0"
     }
 
+    efidisk {
+        efitype = "4m"
+        storage = "local-ceph"
+    }
+
     disks {
         ide {
             ide2 {
@@ -178,6 +188,11 @@ resource "proxmox_vm_qemu" "deora2" {
         id = 0
         model = "virtio"
         bridge = "vmbr0"
+    }
+
+    efidisk {
+        efitype = "4m"
+        storage = "local-ceph"
     }
 
     disks {
