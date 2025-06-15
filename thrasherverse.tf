@@ -52,7 +52,7 @@ resource "proxmox_vm_qemu" "reverb" {
     network {
         id = 1
         model = "virtio"
-        bridge = "vmbr0"
+        bridge = "vmbr1"
     }
 
     efidisk {
