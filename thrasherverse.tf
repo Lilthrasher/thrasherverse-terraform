@@ -16,7 +16,6 @@ resource "proxmox_vm_qemu" "reverb" {
     name = "reverb"
     target_node = "pve"
     vmid = "100"
-    vm_state = "started"
 
     clone = "thrasherverse-lvm"
     full_clone  = true
@@ -36,6 +35,7 @@ resource "proxmox_vm_qemu" "reverb" {
     sshkeys = var.VM_SSH_KEY
     nameserver = "10.27.1.1 8.8.8.8"
     ipconfig0 = "ip=10.27.1.50/24,gw=10.27.1.1"
+    ipconfig1 = "ip=10.27.100.2/24"
 
     cpu {
         cores = 8
@@ -45,6 +45,12 @@ resource "proxmox_vm_qemu" "reverb" {
 
     network {
         id = 0
+        model = "virtio"
+        bridge = "vmbr0"
+    }
+
+    network {
+        id = 1
         model = "virtio"
         bridge = "vmbr0"
     }
@@ -94,7 +100,6 @@ resource "proxmox_vm_qemu" "deora1" {
     name = "deora1"
     target_node = "hapve1"
     vmid = "300"
-    vm_state = "started"
 
     clone = "thrasherverse-ceph"
     full_clone  = true
@@ -157,7 +162,6 @@ resource "proxmox_vm_qemu" "deora2" {
     name = "deora2"
     target_node = "hapve2"
     vmid = "301"
-    vm_state = "started"
 
     clone = "thrasherverse-ceph"
     full_clone  = true
