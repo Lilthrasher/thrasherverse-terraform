@@ -219,15 +219,3 @@ resource "proxmox_vm_qemu" "deora2" {
     }
 
 }
-
-# resource "null_resource" "ansible_playbook" {
-#     depends_on = [ proxmox_vm_qemu.reverb, proxmox_vm_qemu.deora1, proxmox_vm_qemu.deora2 ]
-
-#     triggers = {
-#         always_run = timestamp()
-#     }
-
-#     provisioner "local-exec" {
-#         command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook ../ansible/run.yaml -i ../ansible/hosts --vault-password-file=../ansible/pass"
-#     }
-# }
