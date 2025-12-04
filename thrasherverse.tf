@@ -12,9 +12,9 @@ variable "VM_SSH_KEY" {
     sensitive = true
 }
 
-resource "proxmox_vm_qemu" "reverb" {
-    name = "reverb"
-    target_node = "pve"
+resource "proxmox_vm_qemu" "nitrium" {
+    name = "nitrium"
+    target_node = "pve-prod"
     vmid = "100"
 
     clone = "thrasherverse-lvm"
@@ -23,7 +23,7 @@ resource "proxmox_vm_qemu" "reverb" {
     bios = "ovmf"
     machine = "q35"
 
-    memory = 16384
+    memory = 4096
     scsihw = "virtio-scsi-single"
 
     onboot = true
@@ -33,24 +33,17 @@ resource "proxmox_vm_qemu" "reverb" {
     ciuser = var.VM_USERNAME
     cipassword = var.VM_PASSWORD
     sshkeys = var.VM_SSH_KEY
-    nameserver = "10.27.1.1 8.8.8.8"
-    ipconfig0 = "ip=10.27.1.50/24,gw=10.27.1.1"
-    ipconfig1 = "ip=10.27.100.2/24"
+    nameserver = "10.27.2.1 1.1.1.1"
+    ipconfig0 = "ip=10.27.2.5/24,gw=10.27.2.1"
 
     cpu {
-        cores = 8
+        cores = 4
         sockets = 1
         type = "host"
     }
 
     network {
         id = 0
-        model = "virtio"
-        bridge = "vmbr0"
-    }
-
-    network {
-        id = 1
         model = "virtio"
         bridge = "vmbr1"
     }
@@ -72,7 +65,263 @@ resource "proxmox_vm_qemu" "reverb" {
             scsi0 {
                 disk {
                     storage = "local-lvm"
-                    size = "128G"
+                    size = "256G"
+                    discard = true
+                }
+            }
+        }    
+    }
+
+}
+
+resource "proxmox_vm_qemu" "reverb" {
+    name = "reverb"
+    target_node = "pve-prod"
+    vmid = "101"
+
+    clone = "thrasherverse-lvm"
+    full_clone  = true
+
+    bios = "ovmf"
+    machine = "q35"
+
+    memory = 8192
+    scsihw = "virtio-scsi-single"
+
+    onboot = true
+    agent = 1
+    tags = "docker"
+
+    ciuser = var.VM_USERNAME
+    cipassword = var.VM_PASSWORD
+    sshkeys = var.VM_SSH_KEY
+    nameserver = "10.27.2.1 1.1.1.1"
+    ipconfig0 = "ip=10.27.2.10/24,gw=10.27.2.1"
+
+    cpu {
+        cores = 4
+        sockets = 1
+        type = "host"
+    }
+
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr1"
+    }
+
+    efidisk {
+        efitype = "4m"
+        storage = "local-lvm"
+    }
+
+    disks {
+        ide {
+            ide2 {
+                cloudinit {
+                    storage = "local-lvm"
+                }
+            }
+        }
+        scsi {
+            scsi0 {
+                disk {
+                    storage = "local-lvm"
+                    size = "256G"
+                    discard = true
+                }
+            }
+        }    
+    }
+
+
+}
+
+resource "proxmox_vm_qemu" "rivited" {
+    name = "rivited"
+    target_node = "pve-prod"
+    vmid = "200"
+
+    clone = "thrasherverse-lvm"
+    full_clone  = true
+
+    bios = "ovmf"
+    machine = "q35"
+
+    memory = 4096
+    scsihw = "virtio-scsi-single"
+
+    onboot = true
+    agent = 1
+    tags = "docker"
+
+    ciuser = var.VM_USERNAME
+    cipassword = var.VM_PASSWORD
+    sshkeys = var.VM_SSH_KEY
+    nameserver = "10.27.3.1 1.1.1.1"
+    ipconfig0 = "ip=10.27.3.10/24,gw=10.27.3.1"
+    ipconfig1 = "ip=10.27.100.2/24"
+
+    cpu {
+        cores = 4
+        sockets = 1
+        type = "host"
+    }
+
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr2"
+    }
+
+    network {
+        id = 1
+        model = "virtio"
+        bridge = "vmbr4"
+    }
+
+    efidisk {
+        efitype = "4m"
+        storage = "local-lvm"
+    }
+
+    disks {
+        ide {
+            ide2 {
+                cloudinit {
+                    storage = "local-lvm"
+                }
+            }
+        }
+        scsi {
+            scsi0 {
+                disk {
+                    storage = "local-lvm"
+                    size = "256G"
+                    discard = true
+                }
+            }
+        }    
+    }
+
+}
+
+resource "proxmox_vm_qemu" "anthracite" {
+    name = "anthracite"
+    target_node = "pve-prod"
+    vmid = "300"
+
+    clone = "thrasherverse-lvm"
+    full_clone  = true
+
+    bios = "ovmf"
+    machine = "q35"
+
+    memory = 16384
+    scsihw = "virtio-scsi-single"
+
+    onboot = true
+    agent = 1
+    tags = "dmz"
+
+    ciuser = var.VM_USERNAME
+    cipassword = var.VM_PASSWORD
+    sshkeys = var.VM_SSH_KEY
+    nameserver = "10.27.5.1 1.1.1.1"
+    ipconfig0 = "ip=10.27.5.10/24,gw=10.27.5.1"
+
+    cpu {
+        cores = 6
+        sockets = 1
+        type = "host"
+    }
+
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr3"
+    }
+
+    efidisk {
+        efitype = "4m"
+        storage = "local-lvm"
+    }
+
+    disks {
+        ide {
+            ide2 {
+                cloudinit {
+                    storage = "local-lvm"
+                }
+            }
+        }
+        scsi {
+            scsi0 {
+                disk {
+                    storage = "local-lvm"
+                    size = "256G"
+                    discard = true
+                }
+            }
+        }    
+    }
+
+}
+
+resource "proxmox_vm_qemu" "chicane" {
+    name = "chicane"
+    target_node = "pve-prod"
+    vmid = "301"
+
+    clone = "thrasherverse-lvm"
+    full_clone  = true
+
+    bios = "ovmf"
+    machine = "q35"
+
+    memory = 8192
+    scsihw = "virtio-scsi-single"
+
+    onboot = true
+    agent = 1
+    tags = "dmz"
+
+    ciuser = var.VM_USERNAME
+    cipassword = var.VM_PASSWORD
+    sshkeys = var.VM_SSH_KEY
+    nameserver = "10.27.5.1 1.1.1.1"
+    ipconfig0 = "ip=10.27.5.20/24,gw=10.27.5.1"
+
+    cpu {
+        cores = 4
+        sockets = 1
+        type = "host"
+    }
+
+    network {
+        id = 0
+        model = "virtio"
+        bridge = "vmbr3"
+    }
+
+    efidisk {
+        efitype = "4m"
+        storage = "local-lvm"
+    }
+
+    disks {
+        ide {
+            ide2 {
+                cloudinit {
+                    storage = "local-lvm"
+                }
+            }
+        }
+        scsi {
+            scsi0 {
+                disk {
+                    storage = "local-lvm"
+                    size = "256G"
                     discard = true
                 }
             }
@@ -93,129 +342,5 @@ resource "proxmox_vm_qemu" "reverb" {
     #         }
     #     }
     # }
-
-}
-
-resource "proxmox_vm_qemu" "deora1" {
-    name = "deora1"
-    target_node = "hapve1"
-    vmid = "300"
-
-    clone = "thrasherverse-ceph"
-    full_clone  = true
-
-    bios = "ovmf"
-    machine = "q35"
-
-    memory = 6144
-    scsihw = "virtio-scsi-single"
-
-    onboot = true
-    agent = 1
-    tags = "docker-swarm"
-
-    ciuser = var.VM_USERNAME
-    cipassword = var.VM_PASSWORD
-    sshkeys = var.VM_SSH_KEY
-    nameserver = "10.27.1.1 8.8.8.8"
-    ipconfig0 = "ip=10.27.1.60/24,gw=10.27.1.1"
-
-    cpu {
-        cores = 4
-        sockets = 1
-        type = "host"
-    }
-
-    network {
-        id = 0
-        model = "virtio"
-        bridge = "vmbr0"
-    }
-
-    efidisk {
-        efitype = "4m"
-        storage = "local-ceph"
-    }
-
-    disks {
-        ide {
-            ide2 {
-                cloudinit {
-                    storage = "local-ceph"
-                }
-            }
-        }
-        scsi {
-            scsi0 {
-                disk {
-                    storage = "local-ceph"
-                    size = "128G"
-                    discard = true
-                }
-            }
-        }    
-    }
-
-}
-
-resource "proxmox_vm_qemu" "deora2" {
-    name = "deora2"
-    target_node = "hapve2"
-    vmid = "301"
-
-    clone = "thrasherverse-ceph"
-    full_clone  = true
-
-    bios = "ovmf"
-    machine = "q35"
-
-    memory = 6144
-    scsihw = "virtio-scsi-single"
-
-    onboot = true
-    agent = 1
-    tags = "docker-swarm"
-
-    ciuser = var.VM_USERNAME
-    cipassword = var.VM_PASSWORD
-    sshkeys = var.VM_SSH_KEY
-    nameserver = "10.27.1.1 8.8.8.8"
-    ipconfig0 = "ip=10.27.1.70/24,gw=10.27.1.1"
-
-    cpu {
-        cores = 4
-        sockets = 1
-        type = "host"
-    }
-
-    network {
-        id = 0
-        model = "virtio"
-        bridge = "vmbr0"
-    }
-
-    efidisk {
-        efitype = "4m"
-        storage = "local-ceph"
-    }
-
-    disks {
-        ide {
-            ide2 {
-                cloudinit {
-                    storage = "local-ceph"
-                }
-            }
-        }
-        scsi {
-            scsi0 {
-                disk {
-                    storage = "local-ceph"
-                    size = "128G"
-                    discard = true
-                }
-            }
-        }    
-    }
 
 }
