@@ -17,7 +17,7 @@ resource "proxmox_vm_qemu" "nitrium" {
     target_node = "pve-prod"
     vmid = "100"
 
-    clone = "thrasherverse-lvm"
+    clone = "questing-cloud"
     full_clone  = true
 
     bios = "ovmf"
@@ -26,7 +26,7 @@ resource "proxmox_vm_qemu" "nitrium" {
     memory = 4096
     scsihw = "virtio-scsi-single"
 
-    onboot = true
+    start_at_node_boot = true
     agent = 1
     tags = "docker"
 
@@ -50,21 +50,21 @@ resource "proxmox_vm_qemu" "nitrium" {
 
     efidisk {
         efitype = "4m"
-        storage = "local-lvm"
+        storage = "slim-fast"
     }
 
     disks {
         ide {
             ide2 {
                 cloudinit {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                 }
             }
         }
         scsi {
             scsi0 {
                 disk {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                     size = "256G"
                     discard = true
                 }
@@ -79,7 +79,7 @@ resource "proxmox_vm_qemu" "reverb" {
     target_node = "pve-prod"
     vmid = "101"
 
-    clone = "thrasherverse-lvm"
+    clone = "questing-cloud"
     full_clone  = true
 
     bios = "ovmf"
@@ -88,7 +88,7 @@ resource "proxmox_vm_qemu" "reverb" {
     memory = 8192
     scsihw = "virtio-scsi-single"
 
-    onboot = true
+    start_at_node_boot = true
     agent = 1
     tags = "docker"
 
@@ -112,21 +112,21 @@ resource "proxmox_vm_qemu" "reverb" {
 
     efidisk {
         efitype = "4m"
-        storage = "local-lvm"
+        storage = "slim-fast"
     }
 
     disks {
         ide {
             ide2 {
                 cloudinit {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                 }
             }
         }
         scsi {
             scsi0 {
                 disk {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                     size = "256G"
                     discard = true
                 }
@@ -142,7 +142,7 @@ resource "proxmox_vm_qemu" "rivited" {
     target_node = "pve-prod"
     vmid = "200"
 
-    clone = "thrasherverse-lvm"
+    clone = "questing-cloud"
     full_clone  = true
 
     bios = "ovmf"
@@ -151,7 +151,7 @@ resource "proxmox_vm_qemu" "rivited" {
     memory = 4096
     scsihw = "virtio-scsi-single"
 
-    onboot = true
+    start_at_node_boot = true
     agent = 1
     tags = "docker"
 
@@ -182,21 +182,21 @@ resource "proxmox_vm_qemu" "rivited" {
 
     efidisk {
         efitype = "4m"
-        storage = "local-lvm"
+        storage = "slim-fast"
     }
 
     disks {
         ide {
             ide2 {
                 cloudinit {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                 }
             }
         }
         scsi {
             scsi0 {
                 disk {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                     size = "256G"
                     discard = true
                 }
@@ -211,7 +211,7 @@ resource "proxmox_vm_qemu" "anthracite" {
     target_node = "pve-prod"
     vmid = "300"
 
-    clone = "thrasherverse-lvm"
+    clone = "questing-cloud"
     full_clone  = true
 
     bios = "ovmf"
@@ -220,7 +220,7 @@ resource "proxmox_vm_qemu" "anthracite" {
     memory = 16384
     scsihw = "virtio-scsi-single"
 
-    onboot = true
+    start_at_node_boot = true
     agent = 1
     tags = "dmz"
 
@@ -244,21 +244,21 @@ resource "proxmox_vm_qemu" "anthracite" {
 
     efidisk {
         efitype = "4m"
-        storage = "local-lvm"
+        storage = "slim-fast"
     }
 
     disks {
         ide {
             ide2 {
                 cloudinit {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                 }
             }
         }
         scsi {
             scsi0 {
                 disk {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                     size = "256G"
                     discard = true
                 }
@@ -273,7 +273,7 @@ resource "proxmox_vm_qemu" "chicane" {
     target_node = "pve-prod"
     vmid = "301"
 
-    clone = "thrasherverse-lvm"
+    clone = "questing-cloud"
     full_clone  = true
 
     bios = "ovmf"
@@ -282,7 +282,7 @@ resource "proxmox_vm_qemu" "chicane" {
     memory = 8192
     scsihw = "virtio-scsi-single"
 
-    onboot = true
+    start_at_node_boot = true
     agent = 1
     tags = "dmz"
 
@@ -291,6 +291,7 @@ resource "proxmox_vm_qemu" "chicane" {
     sshkeys = var.VM_SSH_KEY
     nameserver = "10.27.5.1 1.1.1.1"
     ipconfig0 = "ip=10.27.5.20/24,gw=10.27.5.1"
+    ipconfig1 = "ip=10.27.100.3/24"
 
     cpu {
         cores = 4
@@ -304,23 +305,29 @@ resource "proxmox_vm_qemu" "chicane" {
         bridge = "vmbr3"
     }
 
+    network {
+        id = 1
+        model = "virtio"
+        bridge = "vmbr4"
+    }
+
     efidisk {
         efitype = "4m"
-        storage = "local-lvm"
+        storage = "slim-fast"
     }
 
     disks {
         ide {
             ide2 {
                 cloudinit {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                 }
             }
         }
         scsi {
             scsi0 {
                 disk {
-                    storage = "local-lvm"
+                    storage = "slim-fast"
                     size = "256G"
                     discard = true
                 }

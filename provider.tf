@@ -3,11 +3,7 @@ terraform {
   required_providers {
     proxmox = {
       source = "telmate/proxmox"
-      version = "3.0.1-rc9"
-    }
-    null = {
-      source = "hashicorp/null"
-      version = "3.2.4"
+      version = "3.0.2-rc06"
     }
   }
 }
